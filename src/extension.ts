@@ -41,11 +41,45 @@ export function activate(context: vscode.ExtensionContext) {
 
 		vscode.window.showInformationMessage('Add Review Comments for: ' + editor.document.getText(selection) + ', position:' + Object.values(selection) );
 		vscode.commands.executeCommand( "wushan-addcomment.focus");
-
-
 	});
 
 	context.subscriptions.push(disposable);
+
+	const commentsProvider : vscode.TreeDataProvider<vscode.TreeItem> = {
+		getTreeItem: function (element: vscode.TreeItem): vscode.TreeItem | Thenable<vscode.TreeItem> {
+			return element;
+		},
+		getChildren: function (element?: vscode.TreeItem | undefined): vscode.ProviderResult<vscode.TreeItem[]> {
+			return [
+				{
+					resourceUri: vscode.Uri.file('~/mycode/wechat.ts')
+				},
+				{
+					resourceUri: vscode.Uri.file('~/mycode/review.json')
+				},
+				{
+					resourceUri: vscode.Uri.file('~/mycode/README.md')
+				},
+				{
+					resourceUri: vscode.Uri.file('~/mycode/ccms.java')
+				}
+		];
+		}
+	};
+
+	vscode.window.registerTreeDataProvider( 'wushan-all-comments', commentsProvider );
+
+	const commentsDecorationProvider : vscode.FileDecorationProvider = {
+		provideFileDecoration: function (uri: vscode.Uri, token: vscode.CancellationToken): vscode.ProviderResult<vscode.FileDecoration> {
+
+			return {
+				badge: 'U',
+				color: new vscode.ThemeColor('gitDecoration.addedResourceForeground')
+			};
+		}
+	};
+	vscode.window.registerFileDecorationProvider(commentsDecorationProvider);
+
 }
 
 // this method is called when your extension is deactivated

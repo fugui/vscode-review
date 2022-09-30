@@ -10,7 +10,8 @@
 		"Other"
 	],
 	"activationEvents": [
-        "onCommand:wushan.helloWorld"
+        "onCommand:wushan.helloWorld",
+		"onView:wushan-all-comments"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
